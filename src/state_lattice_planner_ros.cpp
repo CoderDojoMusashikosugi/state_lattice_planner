@@ -119,18 +119,19 @@ void StateLatticePlannerROS::process(void)
         geometry_msgs::TransformStamped transformStamped;
         if(local_goal_subscribed){
             goal_transformed = true;
-            try{
-                // local goalをbase_linkにtf
-                // transformStamped = tfBuffer_.lookupTransform("map", "base_link", ros::Time(0));
-                // tf2::doTransform(local_goal.pose, local_goal_base_link.pose, transformStamped);
+            local_goal_base_link = local_goal;
+            // try{
+            //     // local goalをbase_linkにtf
+            //     // transformStamped = tfBuffer_.lookupTransform("map", "base_link", ros::Time(0));
+            //     // tf2::doTransform(local_goal.pose, local_goal_base_link.pose, transformStamped);
 
-                listener.transformPose(ROBOT_FRAME, ros::Time(0), local_goal, local_goal.header.frame_id, local_goal_base_link);
-                // goal_transformed = true;
-            }catch(tf::TransformException ex){
-            // }catch(tf2::TransformException ex){
-                std::cout << "baselink_to_local_goal error!!!" << std::endl;
-                std::cout << ex.what() << std::endl;
-            }
+            //     listener.transformPose(ROBOT_FRAME, ros::Time(0), local_goal, local_goal.header.frame_id, local_goal_base_link);
+            //     // goal_transformed = true;
+            // }catch(tf::TransformException ex){
+            // // }catch(tf2::TransformException ex){
+            //     std::cout << "baselink_to_local_goal error!!!" << std::endl;
+            //     std::cout << ex.what() << std::endl;
+            // }
         }
         if(local_goal_subscribed && local_map_updated && odom_updated && goal_transformed){
             std::cout << "=== state lattice planner ===" << std::endl;
