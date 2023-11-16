@@ -1,7 +1,7 @@
 #include "state_lattice_planner/state_lattice_planner_ros.h"
 
 StateLatticePlannerROS::StateLatticePlannerROS(void)
-:local_nh("~")
+:local_nh("~"),tfBuffer_(), tfListener_(tfBuffer_)
 {
     local_nh.param("HZ", HZ, {20});
     local_nh.param("ROBOT_FRAME", ROBOT_FRAME, {"base_link"});
@@ -78,7 +78,7 @@ void StateLatticePlannerROS::local_goal_callback(const geometry_msgs::PoseStampe
 {
     local_goal = *msg;
     try{
-        listener.transformPose("/odom", ros::Time(0), local_goal, local_goal.header.frame_id, local_goal);
+        listener.transformPose("/odometry", ros::Time(0), local_goal, local_goal.header.frame_id, local_goal);
         local_goal_subscribed = true;
     }catch(tf::TransformException ex){
         std::cout << ex.what() << std::endl;
@@ -112,9 +112,13 @@ void StateLatticePlannerROS::process(void)
     while(ros::ok()){
         bool goal_transformed = false;
         geometry_msgs::PoseStamped local_goal_base_link;
+        geometry_msgs::TransformStamped transformStamped;
         if(local_goal_subscribed){
             try{
-                listener.transformPose(ROBOT_FRAME, ros::Time(0), local_goal, local_goal.header.frame_id, local_goal_base_link);
+                // local goalをbase_linkにtf
+                transformStamped = tfBuffer_.lookupTransform("map", "base_link", ros::Time(0));
+                tf2::doTransform(local_goal, local_goal_base_link, transformStamped);
+                // listener.transformPose(ROBOT_FRAME, ros::Time(0), local_goal, local_goal.header.frame_id, local_goal_base_link);
                 goal_transformed = true;
             }catch(tf::TransformException ex){
                 std::cout << ex.what() << std::endl;

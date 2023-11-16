@@ -73,6 +73,9 @@ protected:
     bool local_map_updated;
     bool odom_updated;
 
+    tf2_ros::Buffer tfBuffer_;
+    tf2_ros::TransformListener tfListener_;
+
     StateLatticePlanner planner;
 };
 
