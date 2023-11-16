@@ -129,6 +129,7 @@ void StateLatticePlannerROS::process(void)
                 // goal_transformed = true;
             }catch(tf::TransformException ex){
             // }catch(tf2::TransformException ex){
+                std::cout << "baselink_to_local_goal error!!!" << std::endl;
                 std::cout << ex.what() << std::endl;
             }
         }
