@@ -1,7 +1,7 @@
 #include "state_lattice_planner/state_lattice_planner_ros.h"
 
 StateLatticePlannerROS::StateLatticePlannerROS(void)
-:local_nh("~"),tfBuffer_(), tfListener_(tfBuffer_)
+:local_nh("~"), tfListener_(tfBuffer_)
 {
     local_nh.param("HZ", HZ, {20});
     local_nh.param("ROBOT_FRAME", ROBOT_FRAME, {"base_link"});
