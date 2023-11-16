@@ -19,7 +19,7 @@
     <arg name="turn_direction_threshold" default="1.0"/>
     <arg name="enable_sharp_trajectory" default="false"/>
 
-    <node pkg="state_lattice_planner" type="state_lattice_planner" name="state_lattice_planner" ns="local_planner">
+    <node pkg="state_lattice_planner" type="state_lattice_planner" name="state_lattice_planner" ns="local_planner" output="screen">
         <rosparam command="load" file="$(arg param_file_name)"/>
         <param name="HZ" value="$(arg hz)"/>
         <param name="N_P" value="$(arg n_p)"/>
@@ -38,7 +38,7 @@
         <param name="ENABLE_SHARP_TRAJECTORY" value="$(arg enable_sharp_trajectory)"/>
         <remap from="/local_map" to="/local_map/expand"/>
         <remap from="/local_goal" to="/next_waypoint"/>
-        <remap from="/cmd_vel" to="/local_path/cmd_vel"/>
+        <remap from="/cmd_vel" to="/atom/motor_control"/>
         <remap from="/odom" to="/atom/odometry"/>
     </node>
 </launch>
