@@ -115,13 +115,14 @@ void StateLatticePlannerROS::process(void)
         geometry_msgs::PoseStamped local_goal_base_link;
         geometry_msgs::TransformStamped transformStamped;
         if(local_goal_subscribed){
+            goal_transformed = true;
             try{
                 // local goalをbase_linkにtf
                 // transformStamped = tfBuffer_.lookupTransform("map", "base_link", ros::Time(0));
                 // tf2::doTransform(local_goal.pose, local_goal_base_link.pose, transformStamped);
 
-                listener.transformPose(ROBOT_FRAME, ros::Time::now(0), local_goal, local_goal.header.frame_id, local_goal_base_link);
-                goal_transformed = true;
+                listener.transformPose(ROBOT_FRAME, ros::Time(0), local_goal, local_goal.header.frame_id, local_goal_base_link);
+                // goal_transformed = true;
             }catch(tf::TransformException ex){
             // }catch(tf2::TransformException ex){
                 std::cout << ex.what() << std::endl;
