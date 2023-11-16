@@ -77,9 +77,9 @@ StateLatticePlannerROS::StateLatticePlannerROS(void)
 void StateLatticePlannerROS::local_goal_callback(const geometry_msgs::PoseStampedConstPtr& msg)
 {
     local_goal = *msg;
-    local_goal_subscribed = true;
+    // local_goal_subscribed = true;
     try{
-        listener.transformPose("/odometry", ros::Time(0), local_goal, local_goal.header.frame_id, local_goal);
+        listener.transformPose("/base_link", ros::Time(0), local_goal, local_goal.header.frame_id, local_goal);
         local_goal_subscribed = true;
     }catch(tf::TransformException ex){
         std::cout << ex.what() << std::endl;
